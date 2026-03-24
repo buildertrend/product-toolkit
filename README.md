@@ -31,11 +31,11 @@ A Claude Code plugin that walks designers, PMs, and other non-engineering users 
     /reload-plugins
     ```
 
+    Switch to Claude's smartest model, which handles the setup more reliably:
+
     ```text
     /model opus
     ```
-
-    This switches to Claude's smartest model, which handles the setup more reliably.
 
     ```text
     /frontend-setup
@@ -57,7 +57,7 @@ When it's done, you'll have the Buildertrend frontend running at `https://local.
 Open Claude Code and paste:
 
 ```text
-Remove the frontend-setup plugin
+Help me uninstall the frontend-setup plugin.
 ```
 
 ## Features

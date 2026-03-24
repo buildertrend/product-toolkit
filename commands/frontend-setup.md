@@ -56,10 +56,10 @@ This is the one step that cannot be automated. Walk the user through it clearly:
 
 1. Tell the user to open the BTNet repository in Azure DevOps (ADO). If they don't have the link, tell them to reach out to **Michael Hanson**.
 2. They may need to sign in with their Buildertrend Microsoft/Azure account.
-4. Once on the page, they should click the **"Clone"** button in the upper right area of the page.
-5. In the dropdown that appears, under the HTTPS section, they should click **"Generate Git Credentials"**.
-6. This will show them a **username** and **password** — tell them to keep this page open or copy both values somewhere, they'll need them in a moment.
-7. They should also copy the **clone URL** shown in that same dropdown (under HTTPS). They'll need this in the next step.
+3. Once on the page, they should click the **"Clone"** button in the upper right area of the page.
+4. In the dropdown that appears, under the HTTPS section, they should click **"Generate Git Credentials"**.
+5. This will show them a **username** and **password** — tell them to keep this page open or copy both values somewhere, they'll need them in a moment.
+6. They should also copy the **clone URL** shown in that same dropdown (under HTTPS). They'll need this in the next step.
 
 If they can't find "Generate Git Credentials" or run into issues with this step, tell them to reach out to **Michael Hanson** for help before continuing.
 

@@ -12,7 +12,7 @@
 	"keywords": ["buildertrend", "onboarding", "frontend", "setup"],
 	"mcpServers": "./.mcp.json",
 	"hooks": {
-		"PreToolUse": [
+		"PermissionRequest": [
 			{
 				"matcher": "",
 				"hooks": [

@@ -14,6 +14,7 @@ You are helping a non-engineering user (probably a designer or PM) set up the BT
 - Check for each prerequisite before installing — don't reinstall things that already exist
 - If something fails, explain what went wrong simply and try the fallback approach
 - When something goes wrong and the user needs help, ask them to copy and paste the text from their terminal into the chat so you can see the error. Explain how to select and copy text from the terminal if needed.
+- Never use command substitution (`$(...)` or backticks) or `eval` in any commands you run. Write out literal values instead.
 
 ## Goal
 
@@ -157,7 +158,7 @@ If something goes wrong, here are common issues:
 - **"Unauthorized" or "401" during pnpm install**: The package feed authentication expired or failed. Re-run `pnpm run setup-bt-feed-credentials` or `pnpm run setup-btfeedauth-crossplatform`.
 - **Node version errors**: Make sure they're on Node 22.x with `node --version`. Use `fnm use 22` to switch.
 - **Git credential issues**: If the clone fails with auth errors, double-check they're using the correct username/password from ADO. They can re-generate credentials.
-- **"EACCES" permission errors on Mac**: May need to fix npm global permissions. Run `sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}`.
+- **"EACCES" permission errors on Mac**: May need to fix npm global permissions. First run `whoami` and `npm config get prefix` to get the username and npm prefix path, then run `sudo chown -R <username> <prefix>/{lib/node_modules,bin,share}` with those literal values filled in.
 - **Browser shows blank page or errors**: Check the terminal for error output. The dev server may still be starting up — wait for the "ready" message before opening the browser.
 - **Login/authentication issues (Auth0)**: The user must sign in with their **@buildertrend.com** email address. If their Buildertrend account uses a different email, they'll need to update it first: go to https://buildertrend.net, sign in, navigate to **Security & Login -> Edit Username**, and change it to their @buildertrend.com email.
 

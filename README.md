@@ -2,7 +2,7 @@
 
 A Claude Code plugin that walks designers, PMs, and other non-engineering users through setting up the Buildertrend frontend (Clients.App) on their local machine. No coding knowledge needed — just follow the prompts.
 
-## Install
+## How to use it
 
 ### Prerequisites
 
@@ -44,9 +44,9 @@ A Claude Code plugin that walks designers, PMs, and other non-engineering users 
 That last command kicks off the setup. Here's what it does:
 
 1. **Checks your computer** — detects your OS and installs any missing tools automatically
-2. **Helps you get credentials** — walks you through generating Git credentials in Azure DevOps
-3. **Downloads the code** — guides you through cloning the repository
-4. **Installs packages** — authenticates with the private package feed and installs dependencies
+2. **Helps you get credentials** — walks you through generating credentials to download our code from Azure DevOps
+3. **Downloads the code**
+4. **Installs dependencies** — authenticates with the private package feed and installs dependencies our code needs
 5. **Configures the environment** — sets up the connection to the shared test environment
 6. **Starts the app** — launches the dev server and opens it in your browser
 

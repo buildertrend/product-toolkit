@@ -1,6 +1,12 @@
-# Buildertrend Frontend Setup
+# Buildertrend Product Toolkit
 
-A Claude Code plugin that walks designers, PMs, and other non-engineering users through setting up the Buildertrend frontend on their local machine. No coding knowledge needed — just follow the prompts.
+Claude Code plugins for designers, PMs, and other non-engineering roles at Buildertrend.
+
+## Plugins
+
+### Frontend Setup
+
+Walks you through setting up the Buildertrend frontend on your local machine. No coding knowledge needed — just follow the prompts.
 
 ## How to use it
 
@@ -18,7 +24,7 @@ A Claude Code plugin that walks designers, PMs, and other non-engineering users 
 3. Type each of these commands into the Claude prompt and press Enter after each one:
 
     ```text
-    /plugin marketplace add buildertrend/frontend-setup
+    /plugin marketplace add buildertrend/product-toolkit
     ```
 
     ```text
@@ -90,7 +96,7 @@ If you run into issues at any point, reach out to **Michael Hanson**.
 ### Repo structure
 
 ```
-frontend-setup/
+product-toolkit/
 ├── .claude-plugin/
 │   ├── marketplace.json      # Marketplace manifest (for plugin install)
 │   └── plugin.json           # Plugin manifest (metadata, hooks)
@@ -131,7 +137,7 @@ This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin w
 Load the plugin from a local checkout:
 
 ```bash
-claude --plugin-dir /path/to/buildertrend-frontend-setup
+claude --plugin-dir /path/to/product-toolkit
 ```
 
 Verify:

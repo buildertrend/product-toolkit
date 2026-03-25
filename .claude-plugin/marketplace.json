@@ -1,11 +1,11 @@
 {
-	"name": "frontend-setup",
+	"name": "product-toolkit",
 	"owner": {
 		"name": "Buildertrend",
 		"email": "michael.hanson@buildertrend.com"
 	},
 	"metadata": {
-		"description": "Buildertrend frontend setup plugin for non-technical users"
+		"description": "Claude Code plugins for designers, PMs, and other non-engineering roles at Buildertrend"
 	},
 	"plugins": [
 		{

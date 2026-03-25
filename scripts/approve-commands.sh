@@ -103,7 +103,7 @@ case "$CMD_FIRST" in
   uname|sw_vers|cat|echo|printf|test|"[")
     ;;
   # File operations
-  ls|pwd|cd|mkdir|cp|touch|head|tail|wc)
+  ls|pwd|cd|mkdir|cp|touch|head|tail|wc|grep)
     ;;
   # Prerequisite checks and installs
   xcode-select|brew|fnm|npm|npx|pnpm|corepack)

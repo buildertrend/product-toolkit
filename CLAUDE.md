@@ -6,6 +6,8 @@ Claude Code plugins for non-technical users (designers, PMs) at Buildertrend.
 
 - Use red-green TDD when implementing new features and fixing issues
 - Use conventional commit prefixes (`fix:`, `feat:`, `chore:`, etc.)
+- Use the plugin name we're changing as the scope (e.g. `frontend-setup`)
+- If a change is related to multiple plugins, don't add a scope
 - Write the rest of the message in plain English describing the user-facing effect, not the code change — non-technical users read the changelog
 - Example: "fix: Allow the setup tool to search inside files" not "fix: Add grep to allowed commands in approve-commands hook"
 - Run `mise run test` when done making changes

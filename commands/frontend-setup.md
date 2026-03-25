@@ -150,6 +150,15 @@ First, change into the Clients.App directory:
 cd Clients.App
 ```
 
+**Before starting the server, check if one is already running on port 443:**
+
+- **On Mac:** Run `lsof -i :443`. If the output shows a process listening on port 443, a dev server is likely already running.
+- **On Windows:** Run `netstat -ano -p TCP` and look for `:443` in the output. If present, a server is likely already running.
+
+If a server is already running, tell the user it looks like the dev server is already going, and skip ahead to opening the browser at https://local.buildertrend.net:443/. Ask the user to confirm they can see the Buildertrend UI.
+
+**If no server is running, start one:**
+
 **On Mac**, the dev server binds to port 443 which requires elevated permissions, so it must be run with `sudo`:
 
 ```bash

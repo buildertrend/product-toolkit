@@ -134,7 +134,7 @@ case "$CMD_FIRST" in
     esac
     ;;
   # Network utilities
-  curl|wget)
+  curl|wget|lsof|netstat)
     ;;
   bash)
     # Block bare "bash" and "bash -c" (inline code execution)

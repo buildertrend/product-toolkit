@@ -35,6 +35,12 @@ EOF
   exit 0
 }
 
+deny() {
+  local msg="${1:-blocked by frontend-setup plugin}"
+  printf '{"hookSpecificOutput":{"hookEventName":"PermissionRequest","decision":{"behavior":"deny","message":"%s"}}}\n' "$msg"
+  exit 0
+}
+
 # --- Read-only tools: always approve ---
 case "$TOOL" in
   Read|Glob|Grep)
@@ -49,19 +55,48 @@ case "$TOOL" in
     if [ -n "$FILE_PATH" ] && echo "$FILE_PATH" | grep -q "BTNet"; then
       approve
     fi
-    exit 1
+    deny "File writes are only allowed inside the BTNet repository."
     ;;
 esac
 
 # --- Bash commands ---
 if [ "$TOOL" != "Bash" ]; then
-  exit 1
+  deny "Tool not allowed by frontend-setup plugin."
 fi
 
 COMMAND=$(parse_field "tool_input.command") || exit 1
 [ -z "$COMMAND" ] && exit 1
 
-CMD_FIRST=$(echo "$COMMAND" | sed 's/^[[:space:]]*//' | cut -d' ' -f1)
+# --- Block dangerous patterns ---
+if echo "$COMMAND" | grep -qE '\$\(|`'; then
+  deny "Command substitution (\$() and backticks) is not allowed. Write out literal values instead."
+fi
+if echo "$COMMAND" | grep -qE '\beval\b'; then
+  deny "eval is not allowed. Run commands directly."
+fi
+if echo "$COMMAND" | grep -qE '[><]'; then
+  deny "Redirects are not allowed."
+fi
+if echo "$COMMAND" | grep -qE '\\n'; then
+  deny "Embedded newlines are not allowed."
+fi
+
+# --- Compound commands: whitelist specific safe patterns, deny the rest ---
+if echo "$COMMAND" | grep -qE '[;|&]'; then
+  case "$COMMAND" in
+    "id -Gn | grep -q admin")                              approve ;;
+    "rm -rf node_modules && pnpm install")                  approve ;;
+    "pnpm run setup-btfeedauth-crossplatform && pnpm install") approve ;;
+  esac
+  deny "Command chaining (pipes, ;, &&, ||) is not allowed. Run each command separately."
+fi
+
+# --- Extract command name, stripping env var prefixes (e.g. NONINTERACTIVE=1) ---
+CMD_LINE=$(echo "$COMMAND" | sed 's/^[[:space:]]*//')
+while echo "$CMD_LINE" | grep -qE '^[A-Za-z_][A-Za-z_0-9]*=[^ ]* '; do
+  CMD_LINE=$(echo "$CMD_LINE" | sed 's/^[A-Za-z_][A-Za-z_0-9]*=[^ ]* *//')
+done
+CMD_FIRST=$(echo "$CMD_LINE" | cut -d' ' -f1)
 
 case "$CMD_FIRST" in
   # OS detection and info
@@ -71,13 +106,18 @@ case "$CMD_FIRST" in
   ls|pwd|cd|mkdir|cp|touch|head|tail|wc)
     ;;
   # Prerequisite checks and installs
-  xcode-select|brew|fnm|node|npm|npx|pnpm|corepack)
+  xcode-select|brew|fnm|npm|npx|pnpm|corepack)
+    ;;
+  node)
+    if echo "$COMMAND" | grep -qE '(^|\s)(-e|--eval)(\s|$)'; then
+      deny "node -e/--eval is not allowed. Use node --version or similar."
+    fi
     ;;
   # Git operations
   git)
     ;;
   # System utilities
-  which|command|type|env|printenv)
+  which|command|type|printenv)
     ;;
   # Shell config
   source|.)
@@ -89,7 +129,7 @@ case "$CMD_FIRST" in
       pnpm|corepack|chown)
         ;;
       *)
-        exit 1
+        deny "sudo is only allowed with pnpm, corepack, or chown."
         ;;
     esac
     ;;
@@ -97,9 +137,12 @@ case "$CMD_FIRST" in
   curl|wget)
     ;;
   bash)
-    # Block bare "bash" with no arguments
-    if [ "$COMMAND" = "bash" ]; then
-      exit 1
+    # Block bare "bash" and "bash -c" (inline code execution)
+    if [ "$CMD_LINE" = "bash" ]; then
+      deny "Running an interactive bash shell is not allowed."
+    fi
+    if echo "$CMD_LINE" | grep -qE '(^|\s)-c(\s|$)'; then
+      deny "bash -c is not allowed. Run commands directly."
     fi
     ;;
   rm)
@@ -107,10 +150,10 @@ case "$CMD_FIRST" in
     if echo "$COMMAND" | grep -qE '^rm -rf node_modules'; then
       approve
     fi
-    exit 1
+    deny "rm is only allowed for node_modules cleanup."
     ;;
   *)
-    exit 1
+    deny "Command not in allowlist. Only standard setup commands are permitted."
     ;;
 esac
 

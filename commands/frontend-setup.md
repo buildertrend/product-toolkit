@@ -14,7 +14,7 @@ You are helping a non-engineering user (probably a designer or PM) set up the BT
 - Check for each prerequisite before installing — don't reinstall things that already exist
 - If something fails, explain what went wrong simply and try the fallback approach
 - When something goes wrong and the user needs help, ask them to copy and paste the text from their terminal into the chat so you can see the error. Explain how to select and copy text from the terminal if needed.
-- Never use command substitution (`$(...)` or backticks) or `eval` in any commands you run. Write out literal values instead.
+- Never use shell operators in commands — no pipes (`|`), chaining (`;`, `&&`, `||`), redirects (`>`, `<`), command substitution (`$(...)` or backticks), or `eval`. Run each command separately unless this file explicitly shows a compound command.
 
 ## Goal
 
@@ -37,7 +37,7 @@ Do not continue with any installation steps if the user is not an admin on Mac.
 
 **On Mac:**
 1. Xcode Command Line Tools — check with `xcode-select -p`. If missing, run `xcode-select --install` and wait for the user to complete the system dialog.
-2. Homebrew — check with `brew --version`. If missing, install from https://brew.sh using their install script.
+2. Homebrew — check with `brew --version`. If missing, install using two steps: first download the installer with `curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -o /tmp/brew_install.sh`, then run it with `NONINTERACTIVE=1 bash /tmp/brew_install.sh`. After install, follow any "Next steps" instructions the installer prints (usually adding Homebrew to PATH).
 3. fnm (Fast Node Manager) — check with `fnm --version`. If missing, install via Homebrew: `brew install fnm`, then add fnm's shell initialization to their shell profile (`fnm env --use-on-cd` — see https://github.com/Schniz/fnm#shell-setup).
 4. Node.js 22.x — check with `node --version`. Need version >=22.12.0 <23. If missing or wrong version, use `fnm install 22` then `fnm use 22`.
 5. corepack and pnpm — run `corepack enable` then verify with `pnpm --version`. Need version >=10.0.0.

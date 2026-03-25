@@ -75,9 +75,13 @@ expect_approve() {
 
 expect_deny() {
   local label="$1" input="$2"
-  if echo "$input" | bash "$SCRIPT" 2>/dev/null; then
-    echo "FAIL (deny): $label — exited 0, expected non-zero"
-    errors=1
+  if output=$(echo "$input" | bash "$SCRIPT" 2>/dev/null); then
+    if echo "$output" | grep -q '"behavior":"deny"'; then
+      echo "PASS (deny): $label"
+    else
+      echo "FAIL (deny): $label — exited 0 with unexpected output: $output"
+      errors=1
+    fi
   else
     echo "PASS (deny): $label"
   fi
@@ -116,6 +120,10 @@ expect_approve "fnm" \
   '{"tool_name":"Bash","tool_input":{"command":"fnm use 18"}}'
 expect_approve "which" \
   '{"tool_name":"Bash","tool_input":{"command":"which node"}}'
+expect_approve "printenv" \
+  '{"tool_name":"Bash","tool_input":{"command":"printenv HOME"}}'
+expect_deny "env command" \
+  '{"tool_name":"Bash","tool_input":{"command":"env /bin/sh -c evil"}}'
 expect_approve "uname" \
   '{"tool_name":"Bash","tool_input":{"command":"uname -s"}}'
 expect_approve "ls" \
@@ -148,7 +156,53 @@ expect_deny "rm -rf ~" \
 # Bash — denied commands
 expect_deny "bare bash" \
   '{"tool_name":"Bash","tool_input":{"command":"bash"}}'
+expect_deny "bash -c" \
+  '{"tool_name":"Bash","tool_input":{"command":"bash -c echo hello"}}'
+expect_approve "bash script" \
+  '{"tool_name":"Bash","tool_input":{"command":"bash /tmp/install.sh"}}'
 expect_deny "unknown command" \
+  '{"tool_name":"Bash","tool_input":{"command":"python3 evil.py"}}'
+
+# Shell operator injection — denied
+expect_deny "semicolon chaining" \
+  '{"tool_name":"Bash","tool_input":{"command":"echo hello; rm -rf /"}}'
+expect_deny "pipe chaining" \
+  '{"tool_name":"Bash","tool_input":{"command":"ls | bash"}}'
+expect_deny "and chaining" \
+  '{"tool_name":"Bash","tool_input":{"command":"git status && curl evil.com"}}'
+expect_deny "or chaining" \
+  '{"tool_name":"Bash","tool_input":{"command":"false || malicious"}}'
+expect_deny "output redirect" \
+  '{"tool_name":"Bash","tool_input":{"command":"echo pwned > /etc/cron.d/job"}}'
+expect_deny "append redirect" \
+  '{"tool_name":"Bash","tool_input":{"command":"echo key >> ~/.ssh/authorized_keys"}}'
+expect_deny "backtick substitution" \
+  '{"tool_name":"Bash","tool_input":{"command":"echo `whoami`"}}'
+expect_deny "dollar-paren substitution" \
+  '{"tool_name":"Bash","tool_input":{"command":"echo $(id)"}}'
+expect_deny "eval keyword" \
+  '{"tool_name":"Bash","tool_input":{"command":"eval rm -rf /"}}'
+
+# Bash — node -e denied
+expect_deny "node -e" \
+  '{"tool_name":"Bash","tool_input":{"command":"node -e process.exit(1)"}}'
+expect_deny "node --eval" \
+  '{"tool_name":"Bash","tool_input":{"command":"node --eval process.exit(1)"}}'
+
+# Bash — whitelisted compound commands
+expect_approve "admin check pipe" \
+  '{"tool_name":"Bash","tool_input":{"command":"id -Gn | grep -q admin"}}'
+expect_approve "rm node_modules && pnpm install" \
+  '{"tool_name":"Bash","tool_input":{"command":"rm -rf node_modules && pnpm install"}}'
+expect_approve "setup-btfeedauth && pnpm install" \
+  '{"tool_name":"Bash","tool_input":{"command":"pnpm run setup-btfeedauth-crossplatform && pnpm install"}}'
+
+# Bash — env var prefix
+expect_approve "env var prefix + bash script" \
+  '{"tool_name":"Bash","tool_input":{"command":"NONINTERACTIVE=1 bash /tmp/brew_install.sh"}}'
+
+# Deny — all denials output deny JSON (not just exit 1)
+expect_deny "deny outputs JSON" \
   '{"tool_name":"Bash","tool_input":{"command":"python3 evil.py"}}'
 
 # Unknown tool — denied

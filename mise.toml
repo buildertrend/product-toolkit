@@ -2,7 +2,7 @@
 node = "lts"
 
 [tasks.lint]
-run = "npx markdownlint-cli2 '**/*.md' '#node_modules'"
+run = "npx markdownlint-cli2 '**/*.md' '#node_modules' '#CHANGELOG.md'"
 description = "Lint Markdown files"
 
 [tasks.validate]

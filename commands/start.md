@@ -78,7 +78,7 @@ This is the one step that cannot be automated. Walk the user through it clearly:
 2. They may need to sign in with their Buildertrend Microsoft/Azure account.
 3. Once on the page, they should click the **"Clone"** button in the upper right area of the page.
 4. In the dropdown that appears, under the HTTPS section, they should click **"Generate Git Credentials"**.
-5. This will show them a **username** and **password** — tell them to keep this page open or copy both values somewhere, they'll need them in a moment.
+5. This will show them a **username** and **password** — tell them to keep this page open or copy both values somewhere, they'll need them in a moment. Make sure they know this is a **separate password from their computer login password** — it's a special one-time password just for downloading the project.
 6. They should also copy the **clone URL** shown in that same dropdown (under HTTPS). They'll need this in the next step.
 
 If they can't find "Generate Git Credentials" or run into issues with this step, tell them to reach out to **Michael Hanson** for help before continuing.
@@ -89,11 +89,11 @@ Ask the user to confirm when they have their credentials and clone URL ready bef
 
 *Skip this step if you already found the project in Step 2.*
 
-**Important:** You cannot run `git clone` yourself because it will prompt for a password, which requires interactive input that Claude cannot handle. Instead, walk the user through running it themselves in a separate terminal window:
+**Important:** You cannot run `git clone` yourself because it will prompt for the Git credential password (the one they generated in Azure DevOps, NOT their computer login password), which requires interactive input that Claude cannot handle. Instead, walk the user through running it themselves in a separate terminal window:
 
 1. Tell the user to open a new terminal window (on Mac: open the Terminal app; on Windows: open PowerShell or Command Prompt)
 2. Tell them to type `git clone` followed by the clone URL they copied in Step 2, then press Enter. (Give them an example of how the command will look, like `git clone https://...`)
-3. Tell them the terminal will ask for a password — they should paste the password they copied in Step 2 and press Enter (the password won't be visible as they type).
+3. Tell them the terminal will ask for a password — they should paste the **Git credential password they generated in Azure DevOps** (NOT their computer login password) and press Enter (the password won't be visible as they type).
 4. Warn them that cloning can take several minutes — it's a large codebase. Tell them to sit tight and let you know when the download finishes. Don't assume it failed just because it's taking a while.
 5. Ask the user to let you know once the clone is complete, then continue from here.
 

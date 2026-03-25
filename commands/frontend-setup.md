@@ -115,7 +115,35 @@ VITE_WEBFORMS_URL=https://test.buildertrend.net
 
 This tells the frontend to connect to the shared test environment instead of looking for a local backend server.
 
-## Step 6: Start the dev server
+## Step 6: Add the local development address
+
+The dev server uses a custom address (`local.buildertrend.net`) that your computer doesn't know about yet. You need to add an entry to your computer's hosts file so it knows that address points to your own machine.
+
+First, read the hosts file to check if the entry already exists:
+
+**On Mac:** Read `/etc/hosts` and look for a line containing `local.buildertrend.net`. If it's already there, skip to the next step.
+
+If the entry is missing, run:
+
+```bash
+sudo sh -c 'echo "127.0.0.1 local.buildertrend.net" >> /etc/hosts'
+```
+
+Tell the user they will be prompted for their Mac login password — they should type it and press Enter (the password won't be visible as they type).
+
+**On Windows:** This step must be done manually. Walk the user through it:
+
+1. Click the Start menu and search for **Notepad**
+2. Right-click on Notepad and choose **Run as administrator**
+3. In Notepad, go to **File → Open** and navigate to `C:\Windows\System32\drivers\etc\`
+4. In the file type dropdown (bottom-right of the Open dialog), change it from "Text Documents" to **All Files**
+5. Select the file called **hosts** and click Open
+6. At the very bottom of the file, add a new line: `127.0.0.1 local.buildertrend.net`
+7. Save the file (Ctrl+S) and close Notepad
+
+After adding the entry on either OS, verify it worked by reading the hosts file again and confirming the line is present.
+
+## Step 7: Start the dev server
 
 First, change into the Clients.App directory:
 

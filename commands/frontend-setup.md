@@ -123,13 +123,12 @@ First, read the hosts file to check if the entry already exists:
 
 **On Mac:** Read `/etc/hosts` and look for a line containing `local.buildertrend.net`. If it's already there, skip to the next step.
 
-If the entry is missing, run:
+If the entry is missing, you cannot run this command yourself because it requires admin permissions and file redirection that Claude can't do. Walk the user through running it in a separate terminal:
 
-```bash
-sudo sh -c 'echo "127.0.0.1 local.buildertrend.net" >> /etc/hosts'
-```
-
-Tell the user they will be prompted for their Mac login password — they should type it and press Enter (the password won't be visible as they type).
+1. Tell them to open a new terminal window (or use an existing one)
+2. Tell them to type this command and press Enter: `sudo sh -c 'echo "127.0.0.1 local.buildertrend.net" >> /etc/hosts'`
+3. Tell them the terminal will ask for their Mac login password — they should type it and press Enter (the password won't be visible as they type)
+4. Ask them to let you know once it's done
 
 **On Windows:** This step must be done manually. Walk the user through it:
 

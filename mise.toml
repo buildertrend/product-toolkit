@@ -49,6 +49,38 @@ for skill in skills/*/SKILL.md; do
     echo "ERROR: $skill name '$skill_name' does not match directory '$dir_name'"
     errors=1
   fi
+  name_len=$(printf '%s' "$skill_name" | wc -c | tr -d ' ')
+  if [ "$name_len" -gt 64 ]; then
+    echo "ERROR: $skill name exceeds 64 characters"
+    errors=1
+  fi
+  if ! echo "$skill_name" | grep -qE '^[a-z0-9]([a-z0-9-]*[a-z0-9])?$'; then
+    echo "ERROR: $skill name '$skill_name' contains invalid characters (must be lowercase alphanumeric and hyphens, no leading/trailing hyphens)"
+    errors=1
+  fi
+  if echo "$skill_name" | grep -q -- '--'; then
+    echo "ERROR: $skill name '$skill_name' contains consecutive hyphens"
+    errors=1
+  fi
+  skill_desc=$(grep '^description:' "$skill" | head -1 | sed 's/^description: *//')
+  desc_len=$(printf '%s' "$skill_desc" | wc -c | tr -d ' ')
+  if [ -z "$skill_desc" ]; then
+    echo "ERROR: $skill has empty description"
+    errors=1
+  elif [ "$desc_len" -gt 1024 ]; then
+    echo "ERROR: $skill description exceeds 1024 characters"
+    errors=1
+  fi
+  skill_compat=$(grep '^compatibility:' "$skill" | head -1 | sed 's/^compatibility: *//')
+  compat_len=$(printf '%s' "$skill_compat" | wc -c | tr -d ' ')
+  if [ -n "$skill_compat" ] && [ "$compat_len" -gt 500 ]; then
+    echo "ERROR: $skill compatibility exceeds 500 characters"
+    errors=1
+  fi
+  line_count=$(wc -l < "$skill")
+  if [ "$line_count" -gt 500 ]; then
+    echo "WARNING: $skill exceeds 500 lines ($line_count lines)"
+  fi
 done
 
 for f in \

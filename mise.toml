@@ -32,7 +32,7 @@ for f in \
   .claude-plugin/plugin.json \
   .claude-plugin/marketplace.json \
   .mcp.json \
-  commands/frontend-setup.md \
+  commands/start.md \
   scripts/approve-commands.sh \
   scripts/install-deps.sh \
   CLAUDE.md; do

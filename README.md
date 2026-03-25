@@ -44,7 +44,7 @@ Walks you through setting up the Buildertrend frontend on your local machine. No
     ```
 
     ```text
-    /frontend-setup
+    /frontend-setup:start
     ```
 
 That last command kicks off the setup. Here's what it does:
@@ -102,7 +102,7 @@ product-toolkit/
 │   └── plugin.json           # Plugin manifest (metadata, hooks)
 ├── .mcp.json                 # Figma + Azure DevOps MCP configuration
 ├── commands/
-│   └── frontend-setup.md     # /frontend-setup command — the full setup flow
+│   └── start.md              # /frontend-setup:start command — the full setup flow
 ├── scripts/
 │   ├── approve-commands.sh   # PermissionRequest hook — auto-approves safe commands
 │   └── install-deps.sh       # OS detection and prerequisite checker
@@ -114,7 +114,7 @@ product-toolkit/
 
 This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin with a **setup command** and **auto-approval hook**:
 
-- **`/frontend-setup`** is the main command. It contains a detailed step-by-step guide that Claude follows to walk the user through the full setup process.
+- **`/frontend-setup:start`** is the main command. It contains a detailed step-by-step guide that Claude follows to walk the user through the full setup process.
 - **`.mcp.json`** configures Figma and Azure DevOps MCP servers so Claude can access designs and work items.
 - **`scripts/approve-commands.sh`** is a PermissionRequest hook that auto-approves safe commands (file reads, git, brew, fnm, node, pnpm, etc.) so non-technical users don't get bombarded with permission prompts. Unrecognized commands are still surfaced for manual approval.
 - **`CLAUDE.md`** instructs Claude to use non-technical language and handle errors silently when possible.
@@ -129,7 +129,7 @@ This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin w
     claude --plugin-dir .
     ```
 
-4. Run `/frontend-setup` to verify the flow works
+4. Run `/frontend-setup:start` to verify the flow works
 5. Open a PR
 
 ### Testing
@@ -142,7 +142,7 @@ claude --plugin-dir /path/to/product-toolkit
 
 Verify:
 
-- [ ] `/frontend-setup` detects OS and checks prerequisites correctly
+- [ ] `/frontend-setup:start` detects OS and checks prerequisites correctly
 - [ ] Missing tools are installed without errors
 - [ ] Credential generation instructions are clear
 - [ ] Dependency install completes successfully
@@ -151,7 +151,7 @@ Verify:
 
 ### Editing the setup command
 
-The setup command (`commands/frontend-setup.md`) contains the full setup flow. Key things to preserve when editing:
+The setup command (`commands/start.md`) contains the full setup flow. Key things to preserve when editing:
 
 - **Non-technical language** — users are designers and PMs, not developers
 - **Step ordering** — later steps depend on earlier ones completing successfully

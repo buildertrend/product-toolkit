@@ -50,7 +50,24 @@ Do not continue with any installation steps if the user is not an admin on Mac.
 
 Tell the user what you found and what you're going to install before proceeding.
 
-## Step 2: Generate Git credentials (MANUAL — user must do this in their browser)
+## Step 2: Check for an existing copy of the project
+
+Before downloading anything, check if the project is already on this computer. Look for a `BTNet` directory in these common locations:
+
+- The user's home directory (e.g., `~/BTNet`)
+- The desktop (e.g., `~/Desktop/BTNet`)
+- Common dev folders (e.g., `~/dev/BTNet`, `~/repos/BTNet`, `~/code/BTNet`)
+- Documents and Downloads (e.g., `~/Documents/BTNet`, `~/Downloads/BTNet`)
+
+Run `ls` on each candidate path to find it. If you find a `BTNet` directory, verify it's the right project by checking that `Clients.App` exists inside it (run `ls` on the `BTNet/Clients.App` path).
+
+**If found:** Tell the user you found an existing copy. `cd` into the BTNet directory and skip ahead to Step 5 (Authenticate to the private package feed).
+
+**If not found:** Ask the user: "I don't see the project on your computer yet. Have you downloaded it before? If so, let me know where it is. Otherwise, we'll download it now." If the user provides a path, verify it the same way (check for `Clients.App` inside it). If they say no, continue with Steps 3 and 4.
+
+## Step 3: Generate Git credentials (MANUAL — user must do this in their browser)
+
+*Skip this step if you already found the project in Step 2.*
 
 This is the one step that cannot be automated. Walk the user through it clearly:
 
@@ -65,7 +82,9 @@ If they can't find "Generate Git Credentials" or run into issues with this step,
 
 Ask the user to confirm when they have their credentials and clone URL ready before continuing.
 
-## Step 3: Clone the repository
+## Step 4: Clone the repository
+
+*Skip this step if you already found the project in Step 2.*
 
 **Important:** You cannot run `git clone` yourself because it will prompt for a password, which requires interactive input that Claude cannot handle. Instead, walk the user through running it themselves in a separate terminal window:
 
@@ -81,11 +100,11 @@ After cloning, cd into the repo:
 cd BTNet
 ```
 
-## Step 4: Authenticate to the private package feed and install dependencies
+## Step 5: Authenticate to the private package feed and install dependencies
 
 The project uses private npm packages that require authentication. This step needs to open a browser window for sign-in, so the user must run it themselves — Claude cannot open browsers.
 
-First, figure out the full path to the BTNet repo. Run `pwd` to see where you are, and check if a `BTNet` folder exists nearby (it was cloned in Step 3). Construct the full path to it.
+First, figure out the full path to the BTNet repo. Run `pwd` to see where you are. If you cloned it in Step 4, check if a `BTNet` folder exists nearby. Construct the full path to it.
 
 Walk the user through running the command in their terminal:
 
@@ -102,7 +121,7 @@ Walk the user through running the command in their terminal:
 
 After the user reports success, ask if they saw any errors in the output before moving on.
 
-## Step 5: Configure the environment
+## Step 6: Configure the environment
 
 Create the file `Clients.App/.env.development.local` with this content:
 
@@ -114,7 +133,7 @@ VITE_WEBFORMS_URL=https://test.buildertrend.net
 
 This tells the frontend to connect to the shared test environment instead of looking for a local backend server.
 
-## Step 6: Add the local development address
+## Step 7: Add the local development address
 
 The dev server uses a custom address (`local.buildertrend.net`) that your computer doesn't know about yet. You need to add an entry to your computer's hosts file so it knows that address points to your own machine.
 
@@ -141,7 +160,7 @@ If the entry is missing, you cannot run this command yourself because it require
 
 After adding the entry on either OS, verify it worked by reading the hosts file again and confirming the line is present.
 
-## Step 7: Start the dev server
+## Step 8: Start the dev server
 
 First, change into the Clients.App directory:
 
@@ -184,7 +203,7 @@ Once the dev server is running (whether you started it or they did manually), te
 
 Confirm with the user that they can see the Buildertrend UI in their browser.
 
-## Step 8 (optional): Connect Figma and Azure DevOps
+## Step 9 (optional): Connect Figma and Azure DevOps
 
 This step is optional — the frontend is already running. But connecting these tools lets Claude help the user work with designs in Figma and work items in Azure DevOps directly from the chat.
 

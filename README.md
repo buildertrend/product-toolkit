@@ -62,7 +62,7 @@ That last command kicks off the setup. Here's what it does:
 
 When it's done, you'll have the Buildertrend frontend running at `https://local.buildertrend.net:443/`.
 
-Next time you want to start the app, just run `/frontend-setup:preview` — it skips the initial setup and goes straight to launching the dev server.
+Next time you want to start the app, just run `/frontend-setup:preview` or ask Claude something like, "Start the app so I can see it in my browser."
 
 ### Uninstall
 

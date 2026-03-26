@@ -6,7 +6,7 @@ Claude Code plugins for designers, PMs, and other non-engineering roles at Build
 
 ### Frontend Setup
 
-A single plugin with four skills:
+A single plugin with several skills, such as:
 
 - **First time setup** — Full setup flow: installs tools, gets credentials, downloads code, and starts the app.
 - **Preview** — Starts the dev server and opens the frontend in your browser.

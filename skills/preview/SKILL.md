@@ -1,4 +1,5 @@
 ---
+name: preview
 description: Start the dev server and open the Buildertrend frontend in your browser. Use when someone asks to run the code, preview their changes, or see the frontend.
 ---
 

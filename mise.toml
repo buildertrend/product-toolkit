@@ -15,19 +15,6 @@ for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json .mcp.json; d
   node -e "JSON.parse(require('fs').readFileSync('$f', 'utf8'))"
 done
 
-for md in commands/*.md; do
-  echo "Checking $md..."
-  if ! head -1 "$md" | grep -q '^---$'; then
-    echo "ERROR: $md missing YAML frontmatter"
-    errors=1
-    continue
-  fi
-  if ! grep -q '^description:' "$md"; then
-    echo "ERROR: $md missing 'description' field"
-    errors=1
-  fi
-done
-
 for skill in skills/*/SKILL.md; do
   echo "Checking $skill..."
   if ! head -1 "$skill" | grep -q '^---$'; then
@@ -87,7 +74,8 @@ for f in \
   .claude-plugin/plugin.json \
   .claude-plugin/marketplace.json \
   .mcp.json \
-  commands/start.md \
+  skills/start/SKILL.md \
+  skills/preview/SKILL.md \
   skills/branch-management/SKILL.md \
   scripts/approve-commands.sh \
   scripts/install-deps.sh \

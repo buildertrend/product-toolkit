@@ -1,4 +1,5 @@
 ---
+name: start
 description: Walk through setting up the Buildertrend frontend on your local machine. For designers and PMs who are new to development tools.
 ---
 

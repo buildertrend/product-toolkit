@@ -6,15 +6,11 @@ Claude Code plugins for designers, PMs, and other non-engineering roles at Build
 
 ### Frontend Setup
 
-Walks you through setting up the Buildertrend frontend on your local machine. No coding knowledge needed — just follow the prompts.
+A single plugin with three skills:
 
-### Preview
-
-Starts the dev server and opens the frontend in your browser. Use this after initial setup whenever you want to view the app again.
-
-### Branch Management
-
-Guides you onto a feature branch before making code changes. Keeps the main codebase safe so your edits can be reviewed separately.
+- **Start** (`/frontend-setup:start`) — Full setup flow: installs tools, gets credentials, downloads code, and starts the app.
+- **Preview** (`/frontend-setup:preview`) — Starts the dev server and opens the frontend in your browser. Use this after initial setup.
+- **Branch management** — Guides you onto a feature branch before making code changes. Keeps the main codebase safe so your edits can be reviewed separately.
 
 ## How to use it
 
@@ -111,10 +107,11 @@ product-toolkit/
 │   ├── marketplace.json      # Marketplace manifest (for plugin install)
 │   └── plugin.json           # Plugin manifest (metadata, hooks)
 ├── .mcp.json                 # Figma + Azure DevOps MCP configuration
-├── commands/
-│   ├── start.md              # /frontend-setup:start — full setup flow
-│   └── preview.md            # /frontend-setup:preview — start dev server
 ├── skills/
+│   ├── start/
+│   │   └── SKILL.md          # /frontend-setup:start — full setup flow
+│   ├── preview/
+│   │   └── SKILL.md          # /frontend-setup:preview — start dev server
 │   └── branch-management/
 │       └── SKILL.md          # Guides users onto a feature branch
 ├── scripts/
@@ -128,10 +125,10 @@ product-toolkit/
 
 ### How it works
 
-This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin with **commands**, **skills**, and an **auto-approval hook**:
+This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin with **skills** and an **auto-approval hook**:
 
-- **`/frontend-setup:start`** is the main command. It contains a detailed step-by-step guide that Claude follows to walk the user through the full setup process.
-- **`/frontend-setup:preview`** is a lighter command that starts the dev server for users who have already completed initial setup.
+- **`/frontend-setup:start`** is the main skill. It contains a detailed step-by-step guide that Claude follows to walk the user through the full setup process.
+- **`/frontend-setup:preview`** is a lighter skill that starts the dev server for users who have already completed initial setup.
 - **`branch-management`** is a skill that activates when a user is about to edit code in BTNet. It guides them onto a feature branch using simple, non-technical language.
 - **`.mcp.json`** configures Figma and Azure DevOps MCP servers so Claude can access designs and work items.
 - **`scripts/approve-commands.sh`** is a PermissionRequest hook that auto-approves safe commands (file reads, git, brew, fnm, node, pnpm, etc.) so non-technical users don't get bombarded with permission prompts. Unrecognized commands are still surfaced for manual approval.
@@ -182,9 +179,9 @@ Manual checklist:
 - [ ] Environment file is created with correct values
 - [ ] Dev server starts and the app loads in the browser
 
-### Editing the setup command
+### Editing the setup skill
 
-The setup command (`commands/start.md`) contains the full setup flow. Key things to preserve when editing:
+The setup skill (`skills/start/SKILL.md`) contains the full setup flow. Key things to preserve when editing:
 
 - **Non-technical language** — users are designers and PMs, not developers
 - **Step ordering** — later steps depend on earlier ones completing successfully

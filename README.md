@@ -8,6 +8,14 @@ Claude Code plugins for designers, PMs, and other non-engineering roles at Build
 
 Walks you through setting up the Buildertrend frontend on your local machine. No coding knowledge needed — just follow the prompts.
 
+### Preview
+
+Starts the dev server and opens the frontend in your browser. Use this after initial setup whenever you want to view the app again.
+
+### Branch Management
+
+Guides you onto a feature branch before making code changes. Keeps the main codebase safe so your edits can be reviewed separately.
+
 ## How to use it
 
 ### Prerequisites
@@ -58,6 +66,8 @@ That last command kicks off the setup. Here's what it does:
 
 When it's done, you'll have the Buildertrend frontend running at `https://local.buildertrend.net:443/`.
 
+Next time you want to start the app, just run `/frontend-setup:preview` — it skips the initial setup and goes straight to launching the dev server.
+
 ### Uninstall
 
 Open Claude Code and paste:
@@ -102,45 +112,68 @@ product-toolkit/
 │   └── plugin.json           # Plugin manifest (metadata, hooks)
 ├── .mcp.json                 # Figma + Azure DevOps MCP configuration
 ├── commands/
-│   └── start.md              # /frontend-setup:start command — the full setup flow
+│   ├── start.md              # /frontend-setup:start — full setup flow
+│   └── preview.md            # /frontend-setup:preview — start dev server
+├── skills/
+│   └── branch-management/
+│       └── SKILL.md          # Guides users onto a feature branch
 ├── scripts/
 │   ├── approve-commands.sh   # PermissionRequest hook — auto-approves safe commands
 │   └── install-deps.sh       # OS detection and prerequisite checker
 ├── CLAUDE.md                 # Behavior guidelines for Claude
+├── CHANGELOG.md
+├── mise.toml                 # Linting, validation, and hook tests
 └── README.md
 ```
 
 ### How it works
 
-This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin with a **setup command** and **auto-approval hook**:
+This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin with **commands**, **skills**, and an **auto-approval hook**:
 
 - **`/frontend-setup:start`** is the main command. It contains a detailed step-by-step guide that Claude follows to walk the user through the full setup process.
+- **`/frontend-setup:preview`** is a lighter command that starts the dev server for users who have already completed initial setup.
+- **`branch-management`** is a skill that activates when a user is about to edit code in BTNet. It guides them onto a feature branch using simple, non-technical language.
 - **`.mcp.json`** configures Figma and Azure DevOps MCP servers so Claude can access designs and work items.
 - **`scripts/approve-commands.sh`** is a PermissionRequest hook that auto-approves safe commands (file reads, git, brew, fnm, node, pnpm, etc.) so non-technical users don't get bombarded with permission prompts. Unrecognized commands are still surfaced for manual approval.
 - **`CLAUDE.md`** instructs Claude to use non-technical language and handle errors silently when possible.
+- **`mise.toml`** defines automated checks — markdown linting, plugin structure validation, and hook tests.
 
 ### Making changes
 
 1. Clone the repo
 2. Edit the files you want to change
-3. Test locally:
+3. Run automated checks:
+
+    ```bash
+    mise run test
+    ```
+
+4. Test locally:
 
     ```bash
     claude --plugin-dir .
     ```
 
-4. Run `/frontend-setup:start` to verify the flow works
-5. Open a PR
+5. Run `/frontend-setup:start` to verify the flow works
+6. Open a PR
+
+Use conventional commit messages with the plugin name as scope (e.g., `feat(frontend-setup): Add preview command`). Write the message in plain English describing the user-facing effect, not the code change.
 
 ### Testing
 
-Load the plugin from a local checkout:
+Run automated checks (markdown linting, JSON validation, structure validation, hook tests):
+
+```bash
+mise run test
+```
+
+Then load the plugin from a local checkout for manual testing:
 
 ```bash
 claude --plugin-dir /path/to/product-toolkit
 ```
 
-Verify:
+Manual checklist:
 
 - [ ] `/frontend-setup:start` detects OS and checks prerequisites correctly
 - [ ] Missing tools are installed without errors

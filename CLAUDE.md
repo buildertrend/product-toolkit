@@ -8,7 +8,7 @@ Claude Code plugins for non-technical users (designers, PMs) at Buildertrend.
 - Use conventional commit prefixes (`fix:`, `feat:`, `chore:`, etc.)
 - Use the plugin name we're changing as the scope (e.g. `frontend-setup`)
 - If a change is related to multiple plugins, don't add a scope
-- If a change is a breaking change (i.e., if it violates the user's previous expectations), indicate that using the Conventional Commit manner
+- If a change is a breaking change (i.e., if it violates the user's previous expectations), indicate that using the Conventional Commit manner (with a `!` at the end of the prefix label)
 - Write the rest of the message in plain English describing the user-facing effect, not the code change — non-technical users read the changelog
 - Example: "fix: Allow the setup tool to search inside files" not "fix: Add grep to allowed commands in approve-commands hook"
 - Run `mise run test` when done making changes

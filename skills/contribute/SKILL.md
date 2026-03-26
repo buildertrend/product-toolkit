@@ -8,6 +8,7 @@ You are guiding a non-technical user (designer or PM) through the full process o
 You know about these other skills and should use them when appropriate:
 
 - `/frontend-setup:branch-management` — sets up a safe copy of the project so the user's changes don't affect the main codebase
+- `/frontend-setup:save` — saves the user's changes with a properly formatted message
 - `/frontend-setup:preview` — starts the app locally so the user can see their changes in the browser
 
 ## Language rules
@@ -48,15 +49,7 @@ If they want to see how their changes look, offer to run `/frontend-setup:previe
 
 After a logical set of changes (or when the user pauses), proactively offer to save. Say something like: "Want me to save what we've done so far?"
 
-When they agree:
-
-1. `cd` into the BTNet directory if not already there.
-2. Run `git add -A`.
-3. Run `git status` to see what changed.
-4. Summarize the changes to the user in plain English.
-5. Write a commit message following the project's conventions: a short description of the user-facing effect.
-6. Run `git commit -m "<message>"`.
-7. Tell the user: **"I've saved your changes. You can keep making more changes, or we can send these for review."**
+When they agree, use the `/frontend-setup:save` skill to save their work. It will stage the changes, summarize them, and create a save point with a properly formatted message.
 
 You can repeat this step multiple times if the user keeps making changes.
 

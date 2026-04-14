@@ -1,6 +1,6 @@
 {
 	"name": "customer-feedback",
-	"version": "4.0.0",
+	"version": "5.0.0",
 	"description": "Draft personalized email replies to customer feedback. Maps feedback to topic-based response templates and creates Outlook drafts.",
 	"author": {
 		"name": "Buildertrend",

@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.0.0](https://github.com/buildertrend/product-toolkit/compare/v4.0.0...v5.0.0) (2026-04-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* Restructure into multi-plugin layout and add customer-feedback plugin
+
+### Features
+
+* **feedback-reply:** Add skill for responding to customer feedback ([8ec1be7](https://github.com/buildertrend/product-toolkit/commit/8ec1be7dea35329573903d7a4ef42c3b2c8e4e62))
+* Restructure into multi-plugin layout and add customer-feedback plugin ([1f01f35](https://github.com/buildertrend/product-toolkit/commit/1f01f3564b8ba4e66b5176ad09298344c2d85979))
+
 ## [4.0.0](https://github.com/buildertrend/product-toolkit/compare/v3.0.0...v4.0.0) (2026-03-26)
 
 

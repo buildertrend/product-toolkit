@@ -6,11 +6,17 @@ Claude Code plugins for designers, PMs, and other non-engineering roles at Build
 
 ### Frontend Setup
 
-A single plugin with several skills, such as:
+Skills for working with the Buildertrend frontend:
 
 - **First time setup** — Full setup flow: installs tools, gets credentials, downloads code, and starts the app.
 - **Preview** — Starts the app and opens it in your browser.
 - **Contribute** — Guides you through making changes end-to-end: setting up a safe copy, editing files, saving your work, and submitting it for review.
+
+### Customer Feedback
+
+Skills for managing customer feedback:
+
+- **Feedback Reply** — Drafts personalized email replies to customer feedback CSVs. Maps feedback to topic-based templates and creates Outlook drafts in batches.
 
 ## How to use it
 
@@ -37,6 +43,12 @@ A single plugin with several skills, such as:
 
     When prompted, select **"Install for you (user scope)"** and press Enter.
 
+    To also install the customer feedback plugin:
+
+    ```text
+    /plugin install customer-feedback
+    ```
+
     ```text
     /reload-plugins
     ```
@@ -51,7 +63,7 @@ A single plugin with several skills, such as:
     /frontend-setup:first-time-setup
     ```
 
-That last command kicks off the setup. Here's what it does:
+The first-time-setup command kicks off the setup. Here's what it does:
 
 1. **Checks your computer** — detects your OS and installs any missing tools automatically
 2. **Helps you get credentials** — walks you through generating credentials to download our code from Azure DevOps
@@ -63,6 +75,8 @@ That last command kicks off the setup. Here's what it does:
 When it's done, you'll have your own Buildertrend running at `https://local.buildertrend.net:443/`.
 
 Next time you want to start the app, just run `/frontend-setup:preview` or ask Claude to start the app.
+
+To draft feedback replies, run `/customer-feedback:feedback-reply` or ask Claude to help you reply to customer feedback.
 
 ### Uninstall
 
@@ -105,22 +119,30 @@ If you run into issues at any point, reach out to **Michael Hanson**.
 ```
 product-toolkit/
 ├── .claude-plugin/
-│   ├── marketplace.json      # Marketplace manifest (for plugin install)
-│   └── plugin.json           # Plugin manifest (metadata, hooks)
-├── .mcp.json                 # Figma, Azure DevOps + Confluence MCP configuration
-├── skills/
-│   ├── first-time-setup/
-│   │   └── SKILL.md          # /frontend-setup:first-time-setup — full setup flow
-│   ├── preview/
-│   │   └── SKILL.md          # /frontend-setup:preview — start dev server
-│   ├── contribute/
-│   │   └── SKILL.md          # /frontend-setup:contribute — make and submit changes
-│   ├── save/
-│   │   └── SKILL.md          # Saves changes with a properly formatted message
-│   └── branch-management/
-│       └── SKILL.md          # Guides users onto a feature branch
-├── scripts/
-│   └── approve-commands.sh   # PermissionRequest hook — auto-approves safe commands
+│   └── marketplace.json      # Marketplace manifest (lists all plugins)
+├── frontend-setup/
+│   ├── .claude-plugin/
+│   │   └── plugin.json       # Plugin manifest (metadata, hooks)
+│   ├── .mcp.json             # Figma, Azure DevOps + Confluence MCP configuration
+│   ├── skills/
+│   │   ├── first-time-setup/
+│   │   │   └── SKILL.md      # /frontend-setup:first-time-setup — full setup flow
+│   │   ├── preview/
+│   │   │   └── SKILL.md      # /frontend-setup:preview — start dev server
+│   │   ├── contribute/
+│   │   │   └── SKILL.md      # /frontend-setup:contribute — make and submit changes
+│   │   ├── save/
+│   │   │   └── SKILL.md      # Saves changes with a properly formatted message
+│   │   └── branch-management/
+│   │       └── SKILL.md      # Guides users onto a feature branch
+│   └── scripts/
+│       └── approve-commands.sh  # PermissionRequest hook — auto-approves safe commands
+├── customer-feedback/
+│   ├── .claude-plugin/
+│   │   └── plugin.json       # Plugin manifest (metadata)
+│   └── skills/
+│       └── feedback-reply/
+│           └── SKILL.md      # /customer-feedback:feedback-reply — draft replies to customer feedback
 ├── CLAUDE.md                 # Behavior guidelines for Claude
 ├── CHANGELOG.md
 ├── mise.toml                 # Linting, validation, and hook tests
@@ -131,6 +153,10 @@ product-toolkit/
 
 This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin with **skills** and an **auto-approval hook**:
 
+Each plugin lives in its own directory with its own `plugin.json`, skills, and config.
+
+**Frontend Setup plugin:**
+
 - **`/frontend-setup:first-time-setup`** is the main skill. It contains a detailed step-by-step guide that Claude follows to walk the user through the full setup process.
 - **`/frontend-setup:preview`** is a lighter skill that starts the dev server for users who have already completed initial setup.
 - **`/frontend-setup:contribute`** guides users through making changes end-to-end: setting up a safe copy, editing files, saving work, and submitting it for review. Delegates to `branch-management` and `preview` as needed.
@@ -138,6 +164,13 @@ This is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin w
 - **`branch-management`** is a skill that activates when a user is about to edit code in BTNet. It guides them onto a feature branch using simple, non-technical language.
 - **`.mcp.json`** configures Figma, Azure DevOps, and Confluence MCP servers so Claude can access designs, work items, and documentation.
 - **`scripts/approve-commands.sh`** is a PermissionRequest hook that auto-approves safe commands (file reads, git, brew, fnm, node, pnpm, etc.) so non-technical users don't get bombarded with permission prompts. Unrecognized commands are still surfaced for manual approval.
+
+**Customer Feedback plugin:**
+
+- **`/customer-feedback:feedback-reply`** drafts personalized email replies to customer feedback. It ingests a CSV, summarizes themes, maps each user to topic-based response templates, and creates Outlook drafts in batches of 5.
+
+**Shared:**
+
 - **`mise.toml`** defines automated checks — markdown linting, plugin structure validation, and hook tests.
 
 ### Making changes
@@ -185,10 +218,11 @@ Manual checklist:
 - [ ] App starts and loads in the browser
 - [ ] `/frontend-setup:preview` starts the server and opens the app
 - [ ] `/frontend-setup:contribute` walks through making a change and submitting it
+- [ ] `/customer-feedback:feedback-reply` drafts replies to customer feedback
 
 ### Editing skills
 
-Each skill lives in `skills/<name>/SKILL.md`. Key things to preserve when editing any skill:
+Each skill lives in `<plugin>/skills/<name>/SKILL.md`. Key things to preserve when editing any skill:
 
 - **Non-technical language** — users are designers and PMs, not developers
 - **Step ordering** — later steps depend on earlier ones completing successfully

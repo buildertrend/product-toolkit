@@ -14,12 +14,25 @@ description = "Validate plugin structure"
 run = """
 errors=0
 
-for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json .mcp.json; do
+# Validate JSON files
+for f in .claude-plugin/marketplace.json; do
   echo "Checking $f..."
   node -e "JSON.parse(require('fs').readFileSync('$f', 'utf8'))"
 done
 
-for skill in skills/*/SKILL.md; do
+for plugin_dir in frontend-setup customer-feedback; do
+  echo "=== Validating plugin: $plugin_dir ==="
+  for f in "$plugin_dir/.claude-plugin/plugin.json"; do
+    echo "Checking $f..."
+    node -e "JSON.parse(require('fs').readFileSync('$f', 'utf8'))"
+  done
+  if [ -f "$plugin_dir/.mcp.json" ]; then
+    echo "Checking $plugin_dir/.mcp.json..."
+    node -e "JSON.parse(require('fs').readFileSync('$plugin_dir/.mcp.json', 'utf8'))"
+  fi
+done
+
+for skill in */skills/*/SKILL.md; do
   echo "Checking $skill..."
   if ! head -1 "$skill" | grep -q '^---$'; then
     echo "ERROR: $skill missing YAML frontmatter"
@@ -74,15 +87,18 @@ for skill in skills/*/SKILL.md; do
   fi
 done
 
+# Required files check
 for f in \
-  .claude-plugin/plugin.json \
   .claude-plugin/marketplace.json \
-  .mcp.json \
-  skills/first-time-setup/SKILL.md \
-  skills/preview/SKILL.md \
-  skills/branch-management/SKILL.md \
-  skills/contribute/SKILL.md \
-  scripts/approve-commands.sh \
+  frontend-setup/.claude-plugin/plugin.json \
+  frontend-setup/.mcp.json \
+  frontend-setup/skills/first-time-setup/SKILL.md \
+  frontend-setup/skills/preview/SKILL.md \
+  frontend-setup/skills/branch-management/SKILL.md \
+  frontend-setup/skills/contribute/SKILL.md \
+  frontend-setup/scripts/approve-commands.sh \
+  customer-feedback/.claude-plugin/plugin.json \
+  customer-feedback/skills/feedback-reply/SKILL.md \
   CLAUDE.md; do
   if [ ! -f "$f" ]; then
     echo "ERROR: $f not found"
@@ -90,7 +106,7 @@ for f in \
   fi
 done
 
-for f in scripts/approve-commands.sh; do
+for f in frontend-setup/scripts/approve-commands.sh; do
   if [ -f "$f" ] && [ ! -x "$f" ]; then
     echo "ERROR: $f is not executable"
     errors=1
@@ -103,7 +119,7 @@ exit $errors
 [tasks."test:hooks"]
 description = "Test approve-commands hook"
 run = """
-SCRIPT=scripts/approve-commands.sh
+SCRIPT=frontend-setup/scripts/approve-commands.sh
 errors=0
 passes=0
 total=0

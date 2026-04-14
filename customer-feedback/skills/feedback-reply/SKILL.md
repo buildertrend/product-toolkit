@@ -25,9 +25,9 @@ After ingesting:
 
 ## Step 2: Get Response Templates
 
-After the summary, ask:
+After the summary, ask the user:
 
-**"Do you have a template document with your topic-based response blocks? If so, provide the file path or paste them here. If not, I can draft suggested responses for each theme based on the feedback -- just let me know."**
+> "Do you have a template document with your topic-based response blocks? If so, provide the file path or paste them here. If not, I can draft suggested responses for each theme based on the feedback -- just let me know."
 
 Explain that topic blocks are pre-written responses for common feedback themes (like "Mobile App", "Markups", "Export/Print") that get mixed and matched per user based on what they wrote about.
 

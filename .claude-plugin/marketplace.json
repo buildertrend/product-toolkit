@@ -10,8 +10,14 @@
 	"plugins": [
 		{
 			"name": "frontend-setup",
-			"source": "./",
+			"source": "./frontend-setup",
 			"description": "Help non-technical users set up the Buildertrend frontend on their local machine",
+			"version": "4.0.0"
+		},
+		{
+			"name": "customer-feedback",
+			"source": "./customer-feedback",
+			"description": "Draft personalized email replies to customer feedback. Maps feedback to topic-based response templates and creates Outlook drafts.",
 			"version": "4.0.0"
 		}
 	]

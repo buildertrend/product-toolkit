@@ -1,0 +1,19 @@
+{
+	"name": "customer-feedback",
+	"version": "4.0.0",
+	"description": "Draft personalized email replies to customer feedback. Maps feedback to topic-based response templates and creates Outlook drafts.",
+	"author": {
+		"name": "Buildertrend",
+		"email": "michael.hanson@buildertrend.com"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/buildertrend/product-toolkit",
+	"repository": "https://github.com/buildertrend/product-toolkit",
+	"keywords": [
+		"buildertrend",
+		"customer",
+		"feedback",
+		"email",
+		"outlook"
+	]
+}
